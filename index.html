@@ -12,16 +12,20 @@
         <h1>Mon Portefeuille Bitcoin Avancé</h1>
     </header>
     <main>
-        <section id="blockchain-info">
-            <h2>Informations sur la Blockchain</h2>
-            <button id="fetch-blockchain-info">Obtenir Infos Blockchain</button>
-            <p id="blockchain-details">Détails: Chargement...</p>
-        </section>
         <section id="wallet-data">
-            <h2>Données du Portefeuille</h2>
+            <h2>Informations du Portefeuille</h2>
             <input type="text" id="wallet-address" placeholder="Entrez l'adresse BTC">
-            <button id="fetch-wallet-balance">Obtenir Solde du Portefeuille</button>
-            <p id="wallet-balance">Solde: Chargement...</p>
+            <button id="fetch-wallet-info">Obtenir Infos du Portefeuille</button>
+            <div id="wallet-info">
+                <h3>Solde</h3>
+                <p id="wallet-balance">Chargement...</p>
+                <h3>Historique</h3>
+                <p id="wallet-history">Chargement...</p>
+                <h3>UTXO</h3>
+                <p id="wallet-utxo">Chargement...</p>
+                <h3>Inscription UTXO</h3>
+                <p id="wallet-inscription-utxo">Chargement...</p>
+            </div>
         </section>
     </main>
     <script src="script.js"></script>

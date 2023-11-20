@@ -1,41 +1,47 @@
 
-document.getElementById('fetch-blockchain-info').addEventListener('click', function() {
-    fetchBlockchainInfo();
-});
-
-document.getElementById('fetch-wallet-balance').addEventListener('click', function() {
-    fetchWalletBalance();
+document.getElementById('fetch-data').addEventListener('click', function() {
+    const address = document.getElementById('wallet-address').value;
+    if (address) {
+        fetchBlockchainInfo();
+        fetchWalletBalance(address);
+        fetchAddressHistory(address);
+    } else {
+        alert('Veuillez entrer une adresse BTC valide.');
+    }
 });
 
 function fetchBlockchainInfo() {
-    // ... existing code for fetching blockchain info ...
-}
-
-function fetchWalletBalance() {
-    const address = document.getElementById('wallet-address').value;
-    if (!address) {
-        alert('Veuillez entrer une adresse BTC valide.');
-        return;
-    }
-
-    const apiURL = `https://open-api.unisat.io/v1/indexer/address/${address}/balance`;
-    const headers = {
-        'Authorization': 'Bearer 2f82139a704b3a87befedba996c1d72c87b6f7e45e4cd953f09645641c68599d',
-        'Content-Type': 'application/json'
-    };
+    const apiURL = 'https://open-api.unisat.io/v1/indexer/blockchain/info';
+    const headers = { 'Authorization': 'Bearer YOUR_API_KEY' };
 
     fetch(apiURL, { headers: headers })
         .then(response => response.json())
         .then(data => {
-            if (data && data.data && data.data.btcSatoshi !== undefined) {
-                const balanceInBTC = data.data.btcSatoshi / 100000000; // Convert Satoshi to BTC
-                document.getElementById('wallet-balance').textContent = 'Solde: ' + balanceInBTC + ' BTC';
-            } else {
-                document.getElementById('wallet-balance').textContent = 'Solde non disponible';
-            }
+            document.getElementById('blockchain-info').textContent = JSON.stringify(data, null, 2);
         })
-        .catch(error => {
-            console.error('Error:', error);
-            document.getElementById('wallet-balance').textContent = 'Erreur lors de la récupération du solde';
-        });
+        .catch(error => console.error('Error fetching blockchain info:', error));
+}
+
+function fetchWalletBalance(address) {
+    const apiURL = `https://open-api.unisat.io/v1/indexer/address/${address}/balance`;
+    const headers = { 'Authorization': 'Bearer YOUR_API_KEY' };
+
+    fetch(apiURL, { headers: headers })
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('wallet-balance').textContent = JSON.stringify(data, null, 2);
+        })
+        .catch(error => console.error('Error fetching wallet balance:', error));
+}
+
+function fetchAddressHistory(address) {
+    const apiURL = `https://open-api.unisat.io/v1/indexer/address/${address}/history`;
+    const headers = { 'Authorization': 'Bearer YOUR_API_KEY' };
+
+    fetch(apiURL, { headers: headers })
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('address-history').textContent = JSON.stringify(data, null, 2);
+        })
+        .catch(error => console.error('Error fetching address history:', error));
 }
